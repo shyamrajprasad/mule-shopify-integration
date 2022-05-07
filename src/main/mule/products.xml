@@ -6,23 +6,23 @@
 http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-  <flow name="productsFlow" doc:id="81fa0568-4681-4d94-91ff-390c5bfbb081" >
+  <flow name="productsCount" doc:id="81fa0568-4681-4d94-91ff-390c5bfbb081" >
     <http:listener doc:name="Listener" doc:id="08308c4e-5ac0-460a-a19b-34e5df93df50" config-ref="HTTP_Listener_config" path="/products/count" allowedMethods="GET"/>
     <shopify:product-count doc:name="Product Count" doc:id="49081087-1cbb-468a-95df-9a7a14096e10" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="productsFlow1" doc:id="bd00c01b-55f7-404f-b79f-4ded2f1ba818" >
+  <flow name="productsCreate" doc:id="bd00c01b-55f7-404f-b79f-4ded2f1ba818" >
     <http:listener doc:name="Listener" doc:id="5721a740-4e0a-41ce-90e6-a3f63c7c5e10" config-ref="HTTP_Listener_config" path="/products" allowedMethods="POST"/>
     <shopify:product-create doc:name="Product Create" doc:id="42c819a6-3c13-4562-9f96-e4845399ef6d" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="productsFlow2" doc:id="a5772ff1-c744-433c-9baa-0ad578e8836f" >
+  <flow name="productsDelete" doc:id="a5772ff1-c744-433c-9baa-0ad578e8836f" >
     <http:listener doc:name="Listener" doc:id="ff0a7660-bce7-4435-b6d8-b5d33079cac8" config-ref="HTTP_Listener_config" path="/products/{productId}" allowedMethods="DELETE"/>
     <shopify:product-delete productIdUriParam="#[attributes.uriParams.productId]" doc:name="Product Delete" doc:id="36e46c09-de1c-4fc2-ac52-e00ee5ede6d1" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="productsFlow3" doc:id="a62676b9-2b86-4e66-8185-de3150ef9e12" >
+  <flow name="productsGet" doc:id="a62676b9-2b86-4e66-8185-de3150ef9e12" >
     <http:listener doc:name="Listener" doc:id="f4e4949d-f45c-4c6e-9bde-91f0bb785ec6" config-ref="HTTP_Listener_config" path="/products/{productId}" allowedMethods="GET"/>
     <shopify:product-get productIdUriParam="#[attributes.uriParams.productId]" doc:name="Product Get" doc:id="f02412d7-ca2e-475d-bf7b-c424ace0fe30" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="productsFlow4" doc:id="41bdf50f-4261-49bb-be00-ce9123d1f84b" >
+  <flow name="productsList" doc:id="41bdf50f-4261-49bb-be00-ce9123d1f84b" >
     <http:listener doc:name="Listener" doc:id="4de70422-4807-4039-aca7-427a84addd38" config-ref="HTTP_Listener_config" path="/products" allowedMethods="GET"/>
     <shopify:product-list doc:name="Product List" doc:id="f5d2de7d-2fbc-467f-b30c-2ecc4e178215" config-ref="Shopify_Connector_Config"/>
     <ee:transform doc:name="Transform Message" doc:id="882ae48f-55e0-4f1b-b094-d9a717fb3ebf" >
@@ -34,7 +34,7 @@ payload]]></ee:set-payload>
       </ee:message>
     </ee:transform>
   </flow>
-  <flow name="productsFlow5" doc:id="41d1383d-3832-4ab2-971c-5135b9428549" >
+  <flow name="productsUpdate" doc:id="41d1383d-3832-4ab2-971c-5135b9428549" >
     <http:listener doc:name="Listener" doc:id="312504df-4965-42fb-8fd7-8bcc459c6c04" config-ref="HTTP_Listener_config" path="/products/{productId}" allowedMethods="PUT"/>
     <shopify:product-update productIdUriParam="#[attributes.uriParams.productId]" doc:name="Product Update" doc:id="96fa1917-bca4-46a6-8325-0e6a147b250d" config-ref="Shopify_Connector_Config"/>
   </flow>

@@ -6,13 +6,7 @@
 http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-  <shopify:config name="Shopify_Connector_Config" doc:name="Shopify Connector Config" doc:id="14b6a27f-1a23-4786-99d9-45300b480df3" >
-    <shopify:basic-auth-connection username="${shopify.username}" password="${shopify.password}" baseUri="https://${shopify.shop}.myshopify.com"/>
-  </shopify:config>
-  <configuration-properties doc:name="Configuration properties" doc:id="8ad04fa8-c374-4522-9045-ec8bbf7080ef" file="application.properties" />
-  <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="5f6c36e4-6dcb-40ac-87e4-7e5b8edeadcb" >
-    <http:listener-connection host="0.0.0.0" port="8081" />
-  </http:listener-config>
+
   <flow name="mule-shopify-integrationFlow" doc:id="5bb9a9a9-68e1-48b8-84e9-4851701d4380" >
     <shopify:on-new-customer-trigger doc:name="On new customer trigger" doc:id="7dd33f2f-7e9d-458c-9a91-97f3213d2e1a" config-ref="Shopify_Connector_Config">
       <scheduling-strategy >

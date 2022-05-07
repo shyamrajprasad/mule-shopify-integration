@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:shopify="http://www.mulesoft.org/schema/mule/shopify"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+  <shopify:config name="Shopify_Connector_Config" doc:name="Shopify Connector Config" doc:id="340eb796-b74a-45f2-b898-24b1c11aad9e" >
+    <shopify:basic-auth-connection username="${shopify.username}" password="${shopify.password}" baseUri="https://${shopify.shop}.myshopify.com"/>
+  </shopify:config>
+  <configuration-properties doc:name="Configuration properties" doc:id="14ff1361-27ab-4527-bb54-d97475fcda75" file="application.properties" />
+  <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="5b4fd97b-670c-4bd1-a70a-cbe9f2f696e3" >
+    <http:listener-connection host="0.0.0.0" port="8081" />
+  </http:listener-config>
+</mule>

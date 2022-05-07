@@ -6,23 +6,23 @@
 http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-  <flow name="products-variantFlow" doc:id="31e8391e-b8ca-4fa2-a2ef-a5df038b3326" >
+  <flow name="productsVariantCount" doc:id="31e8391e-b8ca-4fa2-a2ef-a5df038b3326" >
     <http:listener doc:name="Listener" doc:id="56c696af-c4b3-4f93-8dd2-3ca7d2d9054d" config-ref="HTTP_Listener_config" path="/products/{productId}/variants/count" allowedMethods="GET"/>
     <shopify:product-variant-count productIdUriParam="#[attributes.uriParams.productId]" doc:name="Product Variant Count" doc:id="88184ba2-c733-456c-afbd-e952587d625a" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="products-variantFlow1" doc:id="246cb027-3ee1-4c7d-8d2b-d57ff00bb71c" >
+  <flow name="productsVariantCreate" doc:id="246cb027-3ee1-4c7d-8d2b-d57ff00bb71c" >
     <http:listener doc:name="Listener" doc:id="70f68807-e830-4177-997a-2f6ceeb66d21" config-ref="HTTP_Listener_config" path="/products/{productId}/variants" allowedMethods="POST"/>
     <shopify:product-variant-create productIdUriParam="#[attributes.uriParams.productId]" doc:name="Product Variant Create" doc:id="4f502ce3-cfa7-4e55-b651-02459bb0e22c" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="products-variantFlow2" doc:id="fb29046e-791e-4041-9e24-15fc7c80cef6" >
+  <flow name="productsVariantDelete" doc:id="fb29046e-791e-4041-9e24-15fc7c80cef6" >
     <http:listener doc:name="Listener" doc:id="5e7e808c-9e7d-416e-9bbe-ff9fb1edb6eb" config-ref="HTTP_Listener_config" path="/products/{productId}/variants/{variantId}" allowedMethods="DELETE"/>
     <shopify:product-variant-delete productIdUriParam="#[attributes.uriParams.productId]" variantIdUriParam="#[attributes.uriParams.variantId]" doc:name="Product Variant Delete" doc:id="0a9d318d-6a96-4416-919b-1be3e2894f48" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="products-variantFlow3" doc:id="bd5d2453-26cf-433c-9e60-d6e9e3011406" >
+  <flow name="productsVariantGet" doc:id="bd5d2453-26cf-433c-9e60-d6e9e3011406" >
     <http:listener doc:name="Listener" doc:id="9ce696dd-d747-4539-aeab-6eea9a1afad3" config-ref="HTTP_Listener_config" path="/variants/{variantId}"/>
     <shopify:product-variant-get variantIdUriParam="#[attributes.uriParams.variantId]" doc:name="Product Variant Get" doc:id="d4160ff1-1ca2-4d69-bb9b-2794370e3443" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="products-variantFlow4" doc:id="91d6f3f8-7fb8-457b-8c98-c6d10a52fb97" >
+  <flow name="productsVariantList" doc:id="91d6f3f8-7fb8-457b-8c98-c6d10a52fb97" >
     <http:listener doc:name="Listener" doc:id="68d3dff9-680c-4345-ae3d-4bd6abc2072f" config-ref="HTTP_Listener_config" path="/products/{productId}/variants" allowedMethods="GET"/>
     <shopify:product-variant-list productIdUriParam="#[attributes.uriParams.productId]" doc:name="Product Variant List" doc:id="f79a25d0-8dac-4380-8f28-951f376a618a" config-ref="Shopify_Connector_Config"/>
     <ee:transform doc:name="Transform Message" doc:id="591b739f-620e-49d8-ba6f-b59edc8629db" >
@@ -34,7 +34,7 @@ payload]]></ee:set-payload>
       </ee:message>
     </ee:transform>
   </flow>
-  <flow name="products-variantFlow5" doc:id="df06f0c4-299e-4de6-888b-a088325b8b09" >
+  <flow name="productsVariantUpdate" doc:id="df06f0c4-299e-4de6-888b-a088325b8b09" >
     <http:listener doc:name="Listener" doc:id="18360298-b413-4c0c-943e-9ffcc64f4977" config-ref="HTTP_Listener_config" path="/variants/{variantId}" allowedMethods="PUT"/>
     <shopify:product-variant-update variantIdUriParam="#[attributes.uriParams.variantId]" doc:name="Product Variant Update" doc:id="88a9e5cb-a0b1-4f1d-aef9-bde41aeefd53" config-ref="Shopify_Connector_Config"/>
   </flow>

@@ -6,27 +6,27 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-  <flow name="ordersFlow" doc:id="cf8916c8-c25e-4a6f-a75e-7cb1c8935b45" >
+  <flow name="orderCancel" doc:id="cf8916c8-c25e-4a6f-a75e-7cb1c8935b45" >
     <http:listener doc:name="Listener" doc:id="f179e8ac-9543-41f9-a8ff-9ea8daa768be" config-ref="HTTP_Listener_config" path="/orders/{orderId}/cancel" allowedMethods="POST"/>
     <shopify:order-cancel orderIdUriParam="#[attributes.uriParams.orderId]" doc:name="Order Cancel" doc:id="0d4f9909-5607-45e1-bd02-4583c288c562" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="ordersFlow1" doc:id="172d7a4d-790b-42d2-ad52-996e9ce6d728" >
+  <flow name="ordersClose" doc:id="172d7a4d-790b-42d2-ad52-996e9ce6d728" >
     <http:listener doc:name="Listener" doc:id="f63dc536-92bd-433a-8a62-3b864ea7fb00" config-ref="HTTP_Listener_config" path="/orders/{orderId}/close" allowedMethods="POST"/>
     <shopify:order-close orderIdUriParam="#[attributes.uriParams.orderId]" doc:name="Order Close" doc:id="410666e5-5447-49a0-9669-feae119f8033" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="ordersFlow2" doc:id="b49e56b4-97dc-49d6-96fa-f15d9ea8d658" >
+  <flow name="ordersCreate" doc:id="b49e56b4-97dc-49d6-96fa-f15d9ea8d658" >
     <http:listener doc:name="Listener" doc:id="ab87368e-5879-4230-9474-cea1c41daf39" config-ref="HTTP_Listener_config" path="/orders" allowedMethods="POST"/>
     <shopify:order-create doc:name="Order Create" doc:id="bc81bebc-78c2-476d-894e-5e61a3187fad" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="ordersFlow3" doc:id="6ff7324e-533a-4a13-a343-c6176520e633" >
+  <flow name="ordersDelete" doc:id="6ff7324e-533a-4a13-a343-c6176520e633" >
     <http:listener doc:name="Listener" doc:id="24ede3ce-ca08-4da0-8b99-d9d087f0c5ab" config-ref="HTTP_Listener_config" path="/orders/{orderId}" allowedMethods="DELETE"/>
     <shopify:order-delete orderIdUriParam="#[attributes.uriParams.orderId]" doc:name="Order Delete" doc:id="ec7e737c-c390-4d05-805c-7daba24bd1b5" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="ordersFlow4" doc:id="5d88b523-0417-4a6f-803a-a62d8ea6c88a" >
+  <flow name="ordersGet" doc:id="5d88b523-0417-4a6f-803a-a62d8ea6c88a" >
     <http:listener doc:name="Listener" doc:id="c22f914a-7185-431d-99d2-1cb90b3f52e6" config-ref="HTTP_Listener_config" path="/orders/{orderId}" allowedMethods="GET"/>
     <shopify:order-get orderIdUriParam="#[attributes.uriParams.orderId]" doc:name="Order Get" doc:id="c53bb173-f46b-4a1e-8ecc-6f1cba12846b" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="ordersFlow5" doc:id="208a1e16-f80d-44fe-be0f-7265aeeba741" >
+  <flow name="ordersList" doc:id="208a1e16-f80d-44fe-be0f-7265aeeba741" >
     <http:listener doc:name="Listener" doc:id="ccfce5f5-69da-4e8f-b81c-06efe311ac7c" config-ref="HTTP_Listener_config" path="/orders" allowedMethods="GET"/>
     <shopify:order-list doc:name="Order List" doc:id="b0a76d6b-4ad9-44e2-8dd3-b05bb8f6ab73" config-ref="Shopify_Connector_Config"/>
     <ee:transform doc:name="Transform Message" doc:id="02e0ca73-40ff-48a0-979d-1c1b8d7d1aee" >
@@ -38,11 +38,11 @@ payload]]></ee:set-payload>
       </ee:message>
     </ee:transform>
   </flow>
-  <flow name="ordersFlow6" doc:id="df8c4a29-988a-4b8c-9d8b-7833e3cb2d49" >
+  <flow name="ordersReopen" doc:id="df8c4a29-988a-4b8c-9d8b-7833e3cb2d49" >
     <http:listener doc:name="Listener" doc:id="285ecea0-ab54-47f6-a25a-367a4d874087" config-ref="HTTP_Listener_config" path="/orders/{orderId}/open"/>
     <shopify:order-reopen orderIdUriParam="#[attributes.uriParams.orderId]" doc:name="Order Reopen" doc:id="bfb6bc51-0e51-4192-9f5d-19cb609fef63" config-ref="Shopify_Connector_Config"/>
   </flow>
-  <flow name="ordersFlow7" doc:id="aaf3823c-eec4-4158-bd6d-4eb2a20b0197" >
+  <flow name="ordersUpdate" doc:id="aaf3823c-eec4-4158-bd6d-4eb2a20b0197" >
     <http:listener doc:name="Listener" doc:id="a56454e6-19e8-4bf1-b52e-84e60b43ad8d" config-ref="HTTP_Listener_config" path="/orders/{orderId}" allowedMethods="PUT"/>
     <shopify:order-update orderIdUriParam="#[attributes.uriParams.orderId]" doc:name="Order Update" doc:id="08a93882-80a2-4da5-a991-a99c75bab115" config-ref="Shopify_Connector_Config"/>
   </flow>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:shopify="http://www.mulesoft.org/schema/mule/shopify"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+  <shopify:config name="Shopify_Connector_Config" doc:name="Shopify Connector Config" doc:id="14b6a27f-1a23-4786-99d9-45300b480df3" >
+    <shopify:basic-auth-connection username="${shopify.username}" password="${shopify.password}" baseUri="https://${shopify.shop}.myshopify.com"/>
+  </shopify:config>
+  <configuration-properties doc:name="Configuration properties" doc:id="8ad04fa8-c374-4522-9045-ec8bbf7080ef" file="application.properties" />
+  <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="5f6c36e4-6dcb-40ac-87e4-7e5b8edeadcb" >
+    <http:listener-connection host="0.0.0.0" port="8081" />
+  </http:listener-config>
+  <flow name="mule-shopify-integrationFlow" doc:id="5bb9a9a9-68e1-48b8-84e9-4851701d4380" >
+    <shopify:on-new-customer-trigger doc:name="On new customer trigger" doc:id="7dd33f2f-7e9d-458c-9a91-97f3213d2e1a" config-ref="Shopify_Connector_Config">
+      <scheduling-strategy >
+        <fixed-frequency timeUnit="MINUTES" frequency="1"/>
+      </scheduling-strategy>
+    </shopify:on-new-customer-trigger>
+    <ee:transform doc:name="Transform Message" doc:id="dd651bd4-9648-46a6-a198-115006e5eabe" >
+      <ee:message >
+        <ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <logger level="INFO" doc:name="Logger" doc:id="07ccaa57-3b7d-4025-81d7-9d9cfb795c88" message='#[payload]'/>
+  </flow>
+  <flow name="mule-shopify-integrationFlow1" doc:id="71b6327d-4142-4d66-99c5-8bd36baf4057" >
+    <shopify:on-new-order-trigger doc:name="On new order trigger" doc:id="f1109dca-26f4-4b74-b800-2dfda10f6bce" config-ref="Shopify_Connector_Config">
+      <scheduling-strategy >
+        <fixed-frequency frequency="1" timeUnit="MINUTES"/>
+      </scheduling-strategy>
+    </shopify:on-new-order-trigger>
+    <ee:transform doc:name="Transform Message" doc:id="316dfd3e-7842-4efb-9f3e-606f067c7191" >
+      <ee:message >
+        <ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <logger level="INFO" doc:name="Logger" doc:id="c12bc1d4-2c5c-4e34-ace1-62a67f45560f" message="#[payload]"/>
+  </flow>
+  <flow name="mule-shopify-integrationFlow2" doc:id="d2a35284-212f-411d-99fc-ae54925d202f" >
+    <shopify:on-new-product-trigger doc:name="On new product trigger" doc:id="3e96fabb-c046-4a9d-aec2-debbac7b4093" config-ref="Shopify_Connector_Config">
+      <scheduling-strategy >
+        <fixed-frequency frequency="1" timeUnit="MINUTES"/>
+      </scheduling-strategy>
+    </shopify:on-new-product-trigger>
+    <ee:transform doc:name="Transform Message" doc:id="6d86ed0f-c990-437a-86d2-2afdbd1b2ba0" >
+      <ee:message >
+        <ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <logger level="INFO" doc:name="Logger" doc:id="244d1c17-c435-498e-93af-6280b9ea0583" message="#[payload]"/>
+  </flow>
+  <flow name="mule-shopify-integrationFlow3" doc:id="cb0c2adf-4591-4d27-8cc6-b5228813cc17" >
+    <shopify:on-new-product-variant-trigger doc:name="On new product variant trigger" doc:id="1a64dc9b-62c1-4e7a-ad0a-8ece9d3c0bf4" config-ref="Shopify_Connector_Config" productId="123456">
+      <scheduling-strategy >
+        <fixed-frequency frequency="1" timeUnit="MINUTES"/>
+      </scheduling-strategy>
+    </shopify:on-new-product-variant-trigger>
+    <ee:transform doc:name="Transform Message" doc:id="0ae9cba5-912b-4a35-b0fa-af0cd62e71d3">
+      <ee:message>
+        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <logger level="INFO" doc:name="Logger" doc:id="199047da-6c24-45c7-bc1d-45bdb311e578" message="#[payload]"/>
+  </flow>
+  <sub-flow name="transform-log" doc:id="a3e67daa-5aa5-4aec-a7d3-06bffea21a51" >
+    <ee:transform doc:name="Transform Message" doc:id="77409dbd-7f20-4392-a2c6-774c44a36548" >
+      <ee:message >
+        <ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <logger level="INFO" doc:name="Logger" doc:id="6429ab34-e83a-4f29-8c97-ef3435f0b59b" message="#[payload]"/>
+  </sub-flow>
+  <flow name="mule-shopify-integrationFlow4" doc:id="c834c4be-90c5-4d39-aa39-b89dcfa9490d" >
+    <shopify:on-updated-customer-trigger doc:name="On updated customer trigger" doc:id="af85158f-52ad-47c4-90e8-2f61cc922278" config-ref="Shopify_Connector_Config">
+      <scheduling-strategy >
+        <fixed-frequency frequency="1" timeUnit="MINUTES"/>
+      </scheduling-strategy>
+    </shopify:on-updated-customer-trigger>
+    <ee:transform doc:name="Transform Message" doc:id="4f391b64-6e98-4071-8b42-f007c34bbbed">
+      <ee:message>
+        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+    <logger level="INFO" doc:name="Logger" doc:id="9322fe07-a65c-4aa6-ac23-75ebdeabeefa" message="#[payload]"/>
+  </flow>
+  <flow name="mule-shopify-integrationFlow5" doc:id="a6271ca1-473c-43ca-bc56-2d35d1517a08" >
+    <shopify:on-updated-order-trigger doc:name="On updated order trigger" doc:id="3b04cac2-b970-4004-9dd7-e3795b173ff9" config-ref="Shopify_Connector_Config">
+      <scheduling-strategy >
+        <fixed-frequency frequency="1" timeUnit="MINUTES"/>
+      </scheduling-strategy>
+    </shopify:on-updated-order-trigger>
+    <flow-ref doc:name="transform-log" doc:id="d2abbd05-ef86-41a6-8a8e-fb9105d0f74f" name="transform-log"/>
+  </flow>
+  <flow name="mule-shopify-integrationFlow6" doc:id="82e252c4-880f-48b9-a9b8-492d7397b9f5" >
+    <shopify:on-updated-product-trigger doc:name="On updated product trigger" doc:id="e7e35c39-31f1-4906-97a6-1b09b355e037" config-ref="Shopify_Connector_Config">
+      <scheduling-strategy >
+        <fixed-frequency frequency="1" timeUnit="MINUTES"/>
+      </scheduling-strategy>
+    </shopify:on-updated-product-trigger>
+    <flow-ref doc:name="transform-log" doc:id="b25b74ad-2fdb-4de9-b4d6-a0c54f24c000" name="transform-log"/>
+  </flow>
+</mule>

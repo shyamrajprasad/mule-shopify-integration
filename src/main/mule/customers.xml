@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:sockets="http://www.mulesoft.org/schema/mule/sockets"
+	xmlns:shopify="http://www.mulesoft.org/schema/mule/shopify"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd
+http://www.mulesoft.org/schema/mule/sockets http://www.mulesoft.org/schema/mule/sockets/current/mule-sockets.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+  <flow name="customersCountFlow" doc:id="b83fbc3b-8bbb-441a-8c63-6188e8bdac93" >
+    <http:listener doc:name="Listener" doc:id="1a4e2406-c1d2-4063-a62d-b2acf9edf209" config-ref="HTTP_Listener_config" path="/customers/count"/>
+    <shopify:customer-count doc:name="Customer Count" doc:id="b6642f29-9da3-4d8b-8375-2da416fb2ac2" config-ref="Shopify_Connector_Config"/>
+  </flow>
+  <flow name="customersCreateFlow" doc:id="128743fe-4ddb-4495-849e-9ec58e179868" >
+    <http:listener doc:name="Listener" doc:id="78cd8fb8-f967-4585-a1ea-5381f232744e" config-ref="HTTP_Listener_config" path="/customers" allowedMethods="POST"/>
+    <shopify:customer-create doc:name="Customer Create" doc:id="c651da04-13bc-4d0c-aa6b-d50ebbbab834" config-ref="Shopify_Connector_Config"/>
+  </flow>
+  <flow name="customersActivateFlow" doc:id="9b91d085-14e4-4fc1-a086-1074bd3386b7" >
+    <http:listener doc:name="Listener" doc:id="04b99d5b-18ba-4ff4-ad73-2f7c2ef598c9" config-ref="HTTP_Listener_config" path="/customers/{customerId}/activate"/>
+    <shopify:customer-create-account-activation-url customerIdUriParam="#[attributes.uriParams.customerId]" doc:name="Customer Create Account Activation Url" doc:id="91bbb52e-e07d-4399-a27a-5f4c4b8bed60" config-ref="Shopify_Connector_Config"/>
+  </flow>
+  <flow name="customersGetFlow" doc:id="1d5973e1-3e51-46e5-92d2-25abffc485e8" >
+    <http:listener doc:name="Listener" doc:id="964ca40c-a1a4-4506-b9a1-b846d7b70fe0" config-ref="HTTP_Listener_config" path="/customers/{customerId}"/>
+    <shopify:customer-get customerIdUriParam="#[attributes.uriParams.customerId]" doc:name="Customer Get" doc:id="7ef732e0-16c3-497b-bbd1-9306a3013475" config-ref="Shopify_Connector_Config"/>
+  </flow>
+  <flow name="customersGetListFlow" doc:id="5c190181-d0c0-4125-b3d0-a3808171d50b" >
+    <http:listener doc:name="Listener" doc:id="20d43533-d874-496d-858c-518a196cdae1" config-ref="HTTP_Listener_config" path="/customers" allowedMethods="GET"/>
+    <shopify:customer-list doc:name="Customer List" doc:id="af64ae58-1db9-4e09-8f5d-a24c0c6a2f70" config-ref="Shopify_Connector_Config"/>
+    <ee:transform doc:name="Transform Message" doc:id="eefeea0e-04ce-4643-890d-97e11cfd0247" >
+      <ee:message >
+        <ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+  </flow>
+  <flow name="customersListOrders" doc:id="f67c0415-dadb-4456-b472-f5b9a36b9fab" >
+    <http:listener doc:name="Listener" doc:id="8464f673-b122-48a1-86c0-41dbee7717f3" config-ref="HTTP_Listener_config" path="/customers/{customerId}/orders"/>
+    <shopify:customer-list-orders customerIdUriParam="#[attributes.uriParams.customerId]" doc:name="Customer List Orders" doc:id="52fd689b-ebc1-4ea3-bdb0-46c1dbc550ba" config-ref="Shopify_Connector_Config"/>
+  </flow>
+  <flow name="customersSearch" doc:id="9a1b890b-5e7b-4659-953f-5f124685895c">
+    <http:listener doc:name="Listener" doc:id="2bca384e-edf5-40f8-ac0d-3bf9a8debca5" config-ref="HTTP_Listener_config" path="/customers/search"/>
+    <shopify:customer-search doc:name="Customer Search" doc:id="e8e4fd69-01e7-41fa-8f06-9ddc1de0187c" config-ref="Shopify_Connector_Config" queryQueryParam="#[attributes.queryParams.query]"/>
+  </flow>
+  <flow name="customersSendAccountInvite" doc:id="a996eba3-b747-4db2-bc17-02a5816f6431" >
+    <http:listener doc:name="Listener" doc:id="85805c61-2910-4c7f-848b-d8fc1c772469" config-ref="HTTP_Listener_config" path="/customers/{customerId}/invite"/>
+    <shopify:customer-send-account-invite customerIdUriParam="#[attributes.uriParams.customerId]" doc:name="Customer Send Account Invite" doc:id="7d283351-cfbc-42ab-aa7b-ab87377251b4" config-ref="Shopify_Connector_Config" />
+  </flow>
+ 
+  <flow name="customersUpdate" doc:id="6a00fe76-63ef-4658-842c-79f9f6205568" >
+    <http:listener doc:name="Listener" doc:id="ea184328-c70e-44d3-b7ae-c73c1f969347" config-ref="HTTP_Listener_config" path="/customers/{customerId}" allowedMethods="PUT"/>
+    <shopify:customer-update customerIdUriParam="#[attributes.uriParams.customerId]" doc:name="Customer Update" doc:id="79dbca85-7da0-4ba2-97b0-cf514334a761" config-ref="Shopify_Connector_Config"/>
+  </flow>
+</mule>

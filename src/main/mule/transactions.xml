@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:shopify="http://www.mulesoft.org/schema/mule/shopify"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+  <flow name="transactionsFlow" doc:id="cb72cd2c-95b7-4653-acc0-05b625c2eb1d" >
+    <http:listener doc:name="Listener" doc:id="066334c4-39b3-4801-85b6-b06be3e684c3" config-ref="HTTP_Listener_config" path="/orders/{orderId}/transactions" allowedMethods="GET"/>
+    <shopify:transaction-count orderIdUriParam="#[attributes.uriParams.orderId]" doc:name="Transaction Count" doc:id="832affd4-1bf7-4729-a34d-b202f5e27977" config-ref="Shopify_Connector_Config"/>
+  </flow>
+  <flow name="transactionsFlow1" doc:id="dd683fb5-660a-4275-8fdf-ae8cb8130ef2" >
+    <http:listener doc:name="Listener" doc:id="46fda561-a7c4-4441-90f4-1cbd34c722b0" config-ref="HTTP_Listener_config" path="/orders/{orderId}/transactions" allowedMethods="POST"/>
+    <shopify:transaction-create orderIdUriParam="0" doc:name="Transaction Create" doc:id="246f0470-4a6c-4bf2-93a5-6b25ff87f20d" config-ref="Shopify_Connector_Config"/>
+  </flow>
+  <flow name="transactionsFlow2" doc:id="808435ac-b83c-4424-949c-21df51b59e17" >
+    <http:listener doc:name="Listener" doc:id="c1ff1555-2907-4f22-bf67-3fca42e10d98" config-ref="HTTP_Listener_config" path="/orders/{orderId}/transactions/{transactionId}"/>
+    <shopify:transaction-get orderIdUriParam="#[attributes.uriParams.orderId]" transactionIdUriParam="#[attributes.uriParams.transactionId]" doc:name="Transaction Get" doc:id="44598554-79c1-4cc4-a5ae-de5c086b5551" config-ref="Shopify_Connector_Config"/>
+  </flow>
+  <flow name="transactionsFlow3" doc:id="b0b9032d-b78e-4026-b730-b8ad7618ae6a" >
+    <http:listener doc:name="Listener" doc:id="32ef0084-38e9-406e-a619-337c6fd264d5" config-ref="HTTP_Listener_config" path="/orders/{orderId}/transactions"/>
+    <shopify:transaction-list orderIdUriParam="#[attributes.uriParams.orderId]" doc:name="Transaction List" doc:id="b6361b79-882f-4a62-ae89-12611056a0aa" config-ref="Shopify_Connector_Config"/>
+    <ee:transform doc:name="Transform Message" doc:id="6d2e199d-734b-47e3-89b4-c1ccf3e526a9" >
+      <ee:message >
+        <ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+  </flow>
+  <flow name="transactionsFlow4" doc:id="5e575001-449c-4638-a18a-908c9e3546e6" >
+    <http:listener doc:name="Listener" doc:id="3e4c5948-3b5c-4e36-a3c0-6f92cd15f0fb" config-ref="HTTP_Listener_config" path="/shopify/unauthorize/{ownerId}"/>
+    <shopify:unauthorize doc:name="Unauthorize" doc:id="4ca4e1ba-2a8a-4c82-a00e-00a0eb4a7ed8" config-ref="Shopify_Connector_Config" resourceOwnerId="#[attributes.uriParams.ownerId]"/>
+  </flow>
+</mule>

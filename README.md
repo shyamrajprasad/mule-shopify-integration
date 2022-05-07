@@ -9,5 +9,6 @@ The Shopify connector for Anypoint enables users to integrate their applications
  * Try out the get endpoints
  
 # References: 
-
+https://docs.mulesoft.com/shopify-connector/1.0/
+https://shopify.dev/api/admin-rest#top
  

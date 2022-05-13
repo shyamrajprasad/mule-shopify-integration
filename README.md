@@ -7,6 +7,9 @@ The Shopify connector for Anypoint enables users to integrate their applications
  * update the credentials in applicaiton.properties. 
  * Run the application
  * Try out the get endpoints
+ * 
+ # Shopify Connector Postman Documentation
+ https://documenter.getpostman.com/view/6264289/Uyxhn7JR
  
 # References: 
 * https://docs.mulesoft.com/shopify-connector/1.0/

@@ -82,36 +82,4 @@ payload]]></ee:set-payload>
     </ee:transform>
     <logger level="INFO" doc:name="Logger" doc:id="6429ab34-e83a-4f29-8c97-ef3435f0b59b" message="#[payload]"/>
   </sub-flow>
-  <flow name="mule-shopify-integrationFlow4" doc:id="c834c4be-90c5-4d39-aa39-b89dcfa9490d" >
-    <shopify:on-updated-customer-trigger doc:name="On updated customer trigger" doc:id="af85158f-52ad-47c4-90e8-2f61cc922278" config-ref="Shopify_Connector_Config">
-      <scheduling-strategy >
-        <fixed-frequency frequency="1" timeUnit="MINUTES"/>
-      </scheduling-strategy>
-    </shopify:on-updated-customer-trigger>
-    <ee:transform doc:name="Transform Message" doc:id="4f391b64-6e98-4071-8b42-f007c34bbbed">
-      <ee:message>
-        <ee:set-payload><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
-      </ee:message>
-    </ee:transform>
-    <logger level="INFO" doc:name="Logger" doc:id="9322fe07-a65c-4aa6-ac23-75ebdeabeefa" message="#[payload]"/>
-  </flow>
-  <flow name="mule-shopify-integrationFlow5" doc:id="a6271ca1-473c-43ca-bc56-2d35d1517a08" >
-    <shopify:on-updated-order-trigger doc:name="On updated order trigger" doc:id="3b04cac2-b970-4004-9dd7-e3795b173ff9" config-ref="Shopify_Connector_Config">
-      <scheduling-strategy >
-        <fixed-frequency frequency="1" timeUnit="MINUTES"/>
-      </scheduling-strategy>
-    </shopify:on-updated-order-trigger>
-    <flow-ref doc:name="transform-log" doc:id="d2abbd05-ef86-41a6-8a8e-fb9105d0f74f" name="transform-log"/>
-  </flow>
-  <flow name="mule-shopify-integrationFlow6" doc:id="82e252c4-880f-48b9-a9b8-492d7397b9f5" >
-    <shopify:on-updated-product-trigger doc:name="On updated product trigger" doc:id="e7e35c39-31f1-4906-97a6-1b09b355e037" config-ref="Shopify_Connector_Config">
-      <scheduling-strategy >
-        <fixed-frequency frequency="1" timeUnit="MINUTES"/>
-      </scheduling-strategy>
-    </shopify:on-updated-product-trigger>
-    <flow-ref doc:name="transform-log" doc:id="b25b74ad-2fdb-4de9-b4d6-a0c54f24c000" name="transform-log"/>
-  </flow>
 </mule>
